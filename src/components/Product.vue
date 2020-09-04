@@ -10,8 +10,12 @@
 
                     <div class="top">
                         <div class="images">
-                            <div class="miniatures"></div>
-                            <img id="currentImg" v-bind:src="image" alt="Image of a product">
+                            <div class="miniatures">
+                                <div v-on:click="current(event)" v-for="curImg in image" :key="curImg.message" style="cursor:pointer" >
+                                    <img v-bind:src="curImg"  >
+                                </div>
+                            </div>
+                            <img id="currentImg" v-bind:src="this.currentImg" >
 
                         </div>
                         <div class="info" >
@@ -55,7 +59,8 @@ export default {
         return{
             qtt: this.qty,
             isDisabled: true, 
-            messages:''
+            messages:'',
+            currentImg : this.image[0]
         }
     },
     methods:{
@@ -92,6 +97,11 @@ export default {
 
             });
             
+        },
+        current(event) {
+
+            this.currentImg = event.target.getAttribute('src');
+            console.log(this.currentImg);
         }
     }
     
@@ -156,23 +166,42 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 98%;
 
 }
 .miniatures{
     width: 15%;
-    border: solid red;
     height:100%;
+    display:flex;
+    flex-direction: column;
+    padding-left:auto;
+    padding-right:auto;
 }
-img{
+
+.miniatures > div{
+    width:100%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.miniatures div img{
+    width:100%;
+    padding-left:auto;
+    padding-right:auto;
+}
+
+.miniatures div img:hover{
+    width:120%;
+    border: solid black;
+}
+#currentImg{
     height: 38vh;
     width: 50vh;
-    border: solid black;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: auto;
-    margin-left: auto;
+    margin-right: 23%;
+
 }
 .info{
     display:flex;
@@ -186,14 +215,14 @@ img{
 .labels{
     display:flex;
     flex-direction: column;
-    width: 45%;    
+    width: 50%;    
 
 }
 
 .description{
     display:flex;
     flex-direction: column;
-    width:55%;
+    width:50%;
     height:20vh;
     border-left: solid black;
 }
@@ -208,10 +237,10 @@ img{
     padding-left: 2%;
     padding-right: 2%;
 
-    width: 100%;
+    width: 98%;
     overflow: auto;
     text-align: justify;
-    margin-right:2%;
+    margin-right:5%;
 }
 
 .no-content{
@@ -219,7 +248,7 @@ img{
 }
 
 #qty{
-    width:20%;
+    width:40%;
     border-bottom: 0.3em solid rgb(21, 78, 100);
     border-right: 0.3em solid rgb(21, 78, 100);
 }
@@ -229,10 +258,11 @@ img{
     color:white;
     font-weight: bold;
     margin-left: 3%;
-    width:30%;
+    width:57%;
     display:flex;
     align-items: center;
     justify-content:center;
+    margin-right: 3%;
 }
 
 .modify{
@@ -265,7 +295,8 @@ img{
       font-size: 0.83em;
   }
 
-  #currentImg{
+  #currentImg
+  {
       height: 28vh;
     width: 35vh;
   }

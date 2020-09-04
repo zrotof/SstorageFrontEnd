@@ -93,12 +93,12 @@ export default {
             });
         this.submitted = true;
 
-        this.product.name ='';
-        this.product.description ='';
+        this.product.name =null;
+        this.product.description = null;
         this.product.price = null;
         this.product.qty= null;
-        this.$refs.image.value= '';
-        this.product.ean ='';
+        this.$refs.image.value= null;
+        this.product.ean = null;
     },
     hide(){
 
