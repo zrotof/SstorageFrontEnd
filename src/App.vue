@@ -54,9 +54,9 @@
       <form class="form-find" v-on:submit.prevent="findProduct" method="get">
           <span class="form-text">Cherchez un produit</span>
           <div class="inputs ">
-            <input id="name" v-model="name" type="text" placeholder="Entrez le nom ..." />
+            <input id="name" v-model="name" type="text" placeholder="Entrez le nom ..." required/>
             
-            <input id="ean" v-model="ean" type="text" placeholder="Entrez le code EAN ..." />
+            <input id="ean" v-model="ean" type="text" placeholder="Entrez le code EAN ..." required/>
             
             <button id="button" class="btn-search" type="submit">Chercher</button>
           </div>

@@ -8,7 +8,7 @@ class ProductsService {
   create(data) {
     
 
-    console.log("Inside the service 1: ",data);
+    console.log("Inside the service 1: ",data.image);
 
     const formData = new FormData();
     formData.append("name", data.name);
@@ -16,8 +16,12 @@ class ProductsService {
     formData.append("price", data.price);
     formData.append("qty", data.qty);
     formData.append("ean", data.ean);
-    formData.append("image", data.image);
-    console.log("Inside the service 2: ",formData);
+
+    for(let i =0; i< data.image.length; i++){
+      let image = data.image[i];
+      formData.append('images',image);
+    }
+    //console.log("Inside the service 2: ",formData);
     return http.post("/add", formData);
   }
 

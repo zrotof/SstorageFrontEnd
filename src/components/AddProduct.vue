@@ -3,8 +3,8 @@
    
     <form  enctype="multipart/form-data" v-on:submit.prevent="saveProduct" autocomplete="off" method="POST">
        
-       <!--v-if="submitted"-->
-       <div   class=" cool">
+       <!---->
+       <div v-if="submitted"  class=" cool">
         <strong>Génial!</strong> Votre produit a été créé. Allez dans "<strong>Nos Produits</strong>" si vous voulez y jeter un coup d'oeil.
       </div> 
 
@@ -12,13 +12,13 @@
       <input required class="full" id="name" v-model="product.name" autocomplete="{anything}" name="name" type="text" placeholder="Entrez le nom du produit ici ..." >
       <div class="full ean" >
         <input required class="" id="ean" v-model="product.ean" autocomplete="{anything}" name="ean" type="text" placeholder="Entrez le code EAN ici ...">
-        <div @click="randomNumber()" type="submit">Générez un code aléatoire</div>
+        <div @click="randomNumber()">Générez un code aléatoire</div>
       </div>
       <div class="numbers">
         <input class="middle" id="price" v-model="product.price" name="price" type="number" placeholder="Entrez un Prix ..." >
         <input class="middle" id="qty" v-model="product.qty" name="qty" type="number" placeholder="Entrez une Quantité ..." >
       </div>
-      <input class="full"  id="image" name="image" type="file" placeholder="Choisir une image" >
+      <input ref="image" class="full"  id="image" name="image" type="file" placeholder="Choisir une/des image(s)" multiple accept="image/*" >
       <textarea class="full" id="description" v-model="product.description" name="description" placeholder="Enter the description of the product here ... "></textarea>
       <button id="ajouter" @click="hide()" type="submit" class="full btn btn-primary ">Ajouter</button>
                                
@@ -33,7 +33,7 @@
 <script>
 
 import prodService from '../services/ProductsService';
-import $ from 'jquery'
+import $ from 'jquery';
 export default {
   name: 'add-product',
   props: {
@@ -60,15 +60,32 @@ export default {
   methods: {
    saveProduct() {
 
-     console.log("price: ",this.product.price )
+     console.log("image input: ",this.$refs.image.value.length );
+
+
+     if(this.$refs.image.value.length > 0){
+       const selectedFiles = document.querySelector('#image').files;
+       console.log("selectedImage: ",selectedFiles.length,selectedFiles);
+        for(let i=0; i < selectedFiles.length; i++ ){
+
+        this.product.image.push(selectedFiles[i]);
+     }
+     }
+
+   
+
+
+     console.log(" Images [] :", this.product.image);
+
     var prod = {
       name : (this.product.name),
       description : this.product.description,
       price : ((this.product.price === null) ? 0 : this.product.price ),
       qty : ((this.product.qty === null) ? 0 : this.product.qty ),
-      image : document.querySelector('#image').files[0],
+      image : this.product.image,
       ean : this.product.ean
     };
+
           prodService.create(prod)
           .then (response => {
             this.message = response.data;
@@ -76,12 +93,17 @@ export default {
             });
         this.submitted = true;
 
-  
+        this.product.name ='';
+        this.product.description ='';
+        this.product.price = null;
+        this.product.qty= null;
+        this.$refs.image.value= '';
+        this.product.ean ='';
     },
     hide(){
 
        window.setTimeout(function() {
-      $(".alert").fadeTo(500, 0).slideUp(500, function(){
+      $(".cool").fadeTo(500, 0).slideUp(500, function(){
       });
        }, 5000);
 
@@ -140,7 +162,8 @@ form{
   display:flex;
   align-items: center;
   justify-content:center;
-}
+  height:100%;
+   white-space: nowrap;}
 .numbers{
   width:60%;
   display:flex;
@@ -271,14 +294,12 @@ form{
 @media (max-width: 392px){
 
  .ean div{
-     width: 57%;
+     width: 60%;
 
    }
     #ean{
-      width:43%;
+      width:40%;
     }
-
-    
   form{
     margin-top: 35%;
   }

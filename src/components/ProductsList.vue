@@ -5,7 +5,7 @@
     <div class="bloc-products">
 
         <div v-for="item in products" :key="item.message" class="item" style="cursor: pointer;" @click="goTo(item)">
-        <img v-bind:src="item.image">
+        <img v-bind:src="item.image[0]">
         <span id="nam" class="name">{{item.name}}</span>
         <span id="price" class="price">{{item.price}} €</span>
         <span id="ea" hidden>{{item.ean}}</span>
@@ -49,6 +49,8 @@ export default {
 
           console.log("server response : rien", prod);
 
+
+          
           this.$router.replace(
           {
               name: 'product',
